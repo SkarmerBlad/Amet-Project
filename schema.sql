@@ -1,6 +1,12 @@
 DROP TABLE IF EXISTS User;
 DROP TABLE IF EXISTS Dipendente;
 DROP TABLE IF EXISTS Socio;
+DROP TABLE IF EXISTS Abbonamento;
+DROP TABLE IF EXISTS Movimento_Magazzino;
+DROP TABLE IF EXISTS Sottoscrive;
+DROP TABLE IF EXISTS Prodotto;
+DROP TABLE IF EXISTS Fornitore;
+DROP TABLE IF EXISTS Evento;
 
 
 -- user table
@@ -70,4 +76,97 @@ SELECT * FROM Abbonamento;
 CREATE TABLE Movimento_Magazzino(
   Id_Movimento INT PRIMARY KEY,
   Matricola_Dipendente VARCHAR(15),
-  CONSTRAINT fk_matricola_dip FOREIGN KEY (Matricola_Dipendente) REFERENCES FROM Dipendente(Matricola)
+  Data VARCHAR(15),
+  Tipo VARCHAR(15),
+  Quantita INT,
+  CONSTRAINT fk_matricola_dip FOREIGN KEY (Matricola_Dipendente) REFERENCES Dipendente(Matricola)
+);
+
+INSERT INTO Movimento_Magazzino(Id_Movimento, Matricola_Dipendente, Data, Tipo, Quantita)
+VALUES(1, 'dsdadfasd', '1/1/1111', 'entrata', 19);
+
+SELECT * FROM Movimento_Magazzino;
+
+
+
+-- RELAZIONE SOTTOSCRIVE
+CREATE TABLE Sottoscrive(
+  Id_Abbonamento INT,
+  Id_Tessera INT,
+  Fattura VARCHAR(15),
+  Data_Sottoscrizione VARCHAR(15),
+
+  PRIMARY KEY(Id_Abbonamento, Id_Tessera),
+
+  CONSTRAINT fk_abbonamento FOREIGN KEY (Id_Abbonamento) REFERENCES Abbonamento(Id_Abbonamento),
+  CONSTRAINT fk_tessera FOREIGN KEY (Id_Tessera) REFERENCES Socio(Id_Abbonamento)
+);
+
+INSERT INTO Sottoscrive(Id_Abbonamento, Id_Tessera, Fattura, Data_Sottoscrizione)
+VALUES(1, 1, 'fattura', '11/11/1111');
+
+SELECT * FROM Sottoscrive;
+
+
+-- tabella fornitore
+CREATE TABLE Fornitore(
+  P_iva VARCHAR(15) PRIMARY KEY,
+  Ragione_Sociale VARCHAR(15),
+  Email VARCHAR(30),
+  Telefono VARCHAR(15)
+);
+
+INSERT INTO Fornitore(P_iva, Ragione_Sociale, Email, Telefono)
+VALUES ('13451235', '342452342', 'l.vicinanza04#gmail.com', '3457348443');
+
+SELECT * FROM Fornitore;
+
+
+-- Tabella Prodotto
+CREATE TABLE Prodotto(
+  Id_Prod INT PRIMARY KEY,
+  Id_Fornitore INT,
+  Giacenza INT,
+  Nome VARCHAR(15),
+  Prezzo DECIMALS(10,2),
+  CONSTRAINT fk_fornitore FOREIGN KEY(Id_Fornitore) REFERENCES Fornitore(P_iva)
+);
+
+INSERT INTO Prodotto(Id_Prod, Id_Fornitore, Giacenza, Nome, Prezzo)
+VALUES(1, 1, 10, 'orco', 14.34);
+
+SELECT * FROM Prodotto;
+
+
+-- EVENTO
+CREATE TABLE Evento(
+  Id_Evento INT PRIMARY KEY,
+  Nome VARCHAR(15),
+  Luogo VARCHAR(30),
+  Data VARCHAR(123),
+  Descrizione VARCHAR(1234)
+);
+
+INSERT INTO Evento(Id_Evento, Nome, Luogo, Data, Descrizione)
+VALUES(1, 'AMET', 'BATTIPAGLIA', '111/111/1111', 'LOREM IPSUM');
+
+SELECT * FROM Evento;
+
+
+-- PARTECIPA
+CREATE TABLE Partecipa(
+  Id_Evento INT,
+  Id_Tessera INT,
+  Pagato INT,
+  Data_Prenotazione VARCHAR(15),
+
+  PRIMARY KEY(Id_Evento, Id_Tessera),
+
+  CONSTRAINT fk_event FOREIGN KEY(Id_Evento) REFERENCES Evento(Id_Evento),
+  CONSTRAINT fk_tesser FOREIGN KEY(Id_Tessera) REFERENCES Socio(Id_Tessera)
+);
+
+INSERT INTO Partecipa(Id_Evento, Id_Tessera, Pagato, Data_Prenotazione)
+VALUES(1, 1, 1, '1111/1111/1111');
+
+SELECT * FROM Partecipa;
