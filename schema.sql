@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS Sottoscrive;
 DROP TABLE IF EXISTS Prodotto;
 DROP TABLE IF EXISTS Fornitore;
 DROP TABLE IF EXISTS Evento;
+DROP TABLE IF EXISTS Partecipa;
 
 
 -- user table
@@ -47,13 +48,13 @@ CREATE TABLE Dipendente(
   Stipendio DECIMAL(10,2),
   Iban CHAR(16),
   Ruolo VARCHAR(20),
-  Scadenza_contratto VARCHAR(20),
+  Scadenza_contratto DATE,
 
   CONSTRAINT unq_matricola UNIQUE (Matricola),
   CONSTRAINT fk_dip_id FOREIGN KEY (Id) REFERENCES User(Id)
 );
 INSERT INTO Dipendente(Id, Matricola, Stipendio, Iban, Ruolo, Scadenza_contratto)
-VALUES(1, 'Mat00', 1000.10, 'dfds2fds', 'salumiere', '11/05/2004');
+VALUES(1, 'Mat00', 1000.10, 'dfds2fds', 'salumiere', '11-05-2004');
 
 SELECT * FROM Dipendente;
 
@@ -61,13 +62,13 @@ SELECT * FROM Dipendente;
 -- abbonamento table
 CREATE TABLE Abbonamento(
   Id_Abbonamento INT PRIMARY KEY,
-  Data_Inizio VARCHAR(20),
-  Data_FiNE VARCHAR(20),
+  Data_Inizio DATE,
+  Data_FiNE DATE,
   Costo INT
 );
 
 INSERT INTO Abbonamento(Id_Abbonamento, Data_inizio, Data_Fine, Costo)
-VALUES(1, '25/25/2004', '25/25/2005', 150);
+VALUES(1, '11-25-2004', '11-25-2005', 150);
 
 SELECT * FROM Abbonamento;
 
@@ -76,14 +77,14 @@ SELECT * FROM Abbonamento;
 CREATE TABLE Movimento_Magazzino(
   Id_Movimento INT PRIMARY KEY,
   Matricola_Dipendente VARCHAR(15),
-  Data VARCHAR(15),
+  Data DATE,
   Tipo VARCHAR(15),
   Quantita INT,
   CONSTRAINT fk_matricola_dip FOREIGN KEY (Matricola_Dipendente) REFERENCES Dipendente(Matricola)
 );
 
 INSERT INTO Movimento_Magazzino(Id_Movimento, Matricola_Dipendente, Data, Tipo, Quantita)
-VALUES(1, 'dsdadfasd', '1/1/1111', 'entrata', 19);
+VALUES(1, 'dsdadfasd', '1-1-2024', 'entrata', 19);
 
 SELECT * FROM Movimento_Magazzino;
 
@@ -92,18 +93,18 @@ SELECT * FROM Movimento_Magazzino;
 -- RELAZIONE SOTTOSCRIVE
 CREATE TABLE Sottoscrive(
   Id_Abbonamento INT,
-  Id_Tessera INT,
+  Id_Tessera VARCHAR(15),
   Fattura VARCHAR(15),
-  Data_Sottoscrizione VARCHAR(15),
+  Data_Sottoscrizione DATE,
 
   PRIMARY KEY(Id_Abbonamento, Id_Tessera),
 
   CONSTRAINT fk_abbonamento FOREIGN KEY (Id_Abbonamento) REFERENCES Abbonamento(Id_Abbonamento),
-  CONSTRAINT fk_tessera FOREIGN KEY (Id_Tessera) REFERENCES Socio(Id_Abbonamento)
+  CONSTRAINT fk_tessera FOREIGN KEY (Id_Tessera) REFERENCES Socio(Id_Tessera)
 );
 
 INSERT INTO Sottoscrive(Id_Abbonamento, Id_Tessera, Fattura, Data_Sottoscrizione)
-VALUES(1, 1, 'fattura', '11/11/1111');
+VALUES(1, 1, 'fattura', '11-11-2007');
 
 SELECT * FROM Sottoscrive;
 
@@ -125,10 +126,10 @@ SELECT * FROM Fornitore;
 -- Tabella Prodotto
 CREATE TABLE Prodotto(
   Id_Prod INT PRIMARY KEY,
-  Id_Fornitore INT,
+  Id_Fornitore VARCHAR(15),
   Giacenza INT,
   Nome VARCHAR(15),
-  Prezzo DECIMALS(10,2),
+  Prezzo DECIMAL(10,2),
   CONSTRAINT fk_fornitore FOREIGN KEY(Id_Fornitore) REFERENCES Fornitore(P_iva)
 );
 
@@ -143,12 +144,12 @@ CREATE TABLE Evento(
   Id_Evento INT PRIMARY KEY,
   Nome VARCHAR(15),
   Luogo VARCHAR(30),
-  Data VARCHAR(123),
+  Data DATE,
   Descrizione VARCHAR(1234)
 );
 
 INSERT INTO Evento(Id_Evento, Nome, Luogo, Data, Descrizione)
-VALUES(1, 'AMET', 'BATTIPAGLIA', '111/111/1111', 'LOREM IPSUM');
+VALUES(1, 'AMET', 'BATTIPAGLIA', '12-05-2017', 'LOREM IPSUM');
 
 SELECT * FROM Evento;
 
@@ -158,7 +159,7 @@ CREATE TABLE Partecipa(
   Id_Evento INT,
   Id_Tessera INT,
   Pagato INT,
-  Data_Prenotazione VARCHAR(15),
+  Data_Prenotazione DATE,
 
   PRIMARY KEY(Id_Evento, Id_Tessera),
 
@@ -167,6 +168,6 @@ CREATE TABLE Partecipa(
 );
 
 INSERT INTO Partecipa(Id_Evento, Id_Tessera, Pagato, Data_Prenotazione)
-VALUES(1, 1, 1, '1111/1111/1111');
+VALUES(1, 1, 1, '12-21-2024');
 
 SELECT * FROM Partecipa;
