@@ -24,7 +24,6 @@ CREATE TABLE User (
 INSERT INTO User (Id, Nome, Cognome, Cf, Email, Numero_Telefono, Indirizzo, Citta, Cap)
 VALUES(1, 'Luca', 'Vicinanza', 'VCNLCU04E11H703K', 'luca.vicinanza04@gmail.com', '3457348443', 'Via Posidonia 165', 'Salerno', 84128);
 
-SELECT * FROM User;
 -- socio table
 CREATE TABLE Socio(
   Id INT PRIMARY KEY,
@@ -34,7 +33,6 @@ CREATE TABLE Socio(
   CONSTRAINT fk_id FOREIGN KEY (Id) REFERENCES User(Id)
 );
 INSERT INTO Socio(Id, Id_Tessera) VALUES(1, '123432');
-SELECT * FROM Socio;
 
 -- dipendente table
 CREATE TABLE Dipendente(
@@ -53,8 +51,6 @@ CREATE TABLE Dipendente(
 INSERT INTO Dipendente(Id, Matricola, Stipendio, Iban, Ruolo, Scadenza_contratto)
 VALUES(1, 'Mat00', 1000.10, 'dfds2fds', 'salumiere', '2004-11-05');
 
-SELECT * FROM Dipendente;
-
 -- abbonamento table
 CREATE TABLE Abbonamento(
   Id_Abbonamento INT PRIMARY KEY,
@@ -65,7 +61,6 @@ CREATE TABLE Abbonamento(
 INSERT INTO Abbonamento(Id_Abbonamento, Data_inizio, Data_Fine, Costo)
 VALUES(1, '2004-11-25', '2005-11-25', 150);
 
-SELECT * FROM Abbonamento;
 -- MOVIMENTO MAGAZZINO
 CREATE TABLE Movimento_Magazzino(
   Id_Movimento INT PRIMARY KEY,
@@ -79,7 +74,6 @@ CREATE TABLE Movimento_Magazzino(
 INSERT INTO Movimento_Magazzino(Id_Movimento, Matricola_Dipendente, Data, Tipo, Quantita)
 VALUES(1, 'Mat00', '2024-01-01', 'entrata', 19);
 
-SELECT * FROM Abbonamento;
 -- RELAZIONE SOTTOSCRIVE
 CREATE TABLE Sottoscrive(
   Id_Abbonamento INT,
@@ -106,7 +100,6 @@ CREATE TABLE Fornitore(
 INSERT INTO Fornitore(P_iva, Ragione_Sociale, Email, Telefono)
 VALUES ('13451235', '342452342', 'l.vicinanza04#gmail.com', '3457348443');
 
-SELECT * FROM Fornitore;
 -- Tabella Prodotto
 CREATE TABLE Prodotto(
   Id_Prod INT PRIMARY KEY,
@@ -120,7 +113,6 @@ CREATE TABLE Prodotto(
 INSERT INTO Prodotto(Id_Prod, Id_Fornitore, Giacenza, Nome, Prezzo)
 VALUES(1, '13451235', 10, 'orco', 14.34);
 
-SELECT * FROM Prodotto;
 -- EVENTO
 CREATE TABLE Evento(
   Id_Evento INT PRIMARY KEY,
@@ -131,8 +123,6 @@ CREATE TABLE Evento(
 );
 INSERT INTO Evento(Id_Evento, Nome, Luogo, Data, Descrizione)
 VALUES(1, 'AMET', 'BATTIPAGLIA', '2017-05-12', 'LOREM IPSUM');
-
-SELECT * FROM Evento;
 
 -- PARTECIPA
 CREATE TABLE Partecipa(
@@ -149,5 +139,3 @@ CREATE TABLE Partecipa(
 -- CORRETTO: Uso la tessera corretta e il formato data YYYY-MM-DD
 INSERT INTO Partecipa(Id_Evento, Id_Tessera, Pagato, Data_Prenotazione)
 VALUES(1, '123432', 1, '2024-12-21');
-
-SELECT * FROM Partecipa;
