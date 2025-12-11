@@ -58,10 +58,13 @@ CREATE TABLE Abbonamento(
 CREATE TABLE Movimento_Magazzino(
   Id_Movimento INT PRIMARY KEY,
   Matricola_Dipendente VARCHAR(15),
+  Id_Prod INT,                          -- 1. Aggiunta colonna prodotto
   Data DATE,
-  Tipo VARCHAR(15),
+  Tipo VARCHAR(15),                     -- 'entrata' o 'uscita'
   Quantita INT,
-  CONSTRAINT fk_matricola_dip FOREIGN KEY (Matricola_Dipendente) REFERENCES Dipendente(Matricola)
+
+  CONSTRAINT fk_matricola_dip FOREIGN KEY (Matricola_Dipendente) REFERENCES Dipendente(Matricola),
+  CONSTRAINT fk_prodotto FOREIGN KEY (Id_Prod) REFERENCES Prodotto(Id_Prod) -- 2. Collegamento al prodotto
 );
 -- CORRETTO: Uso 'Mat00' che esiste nella tabella Dipendente
 
@@ -184,13 +187,13 @@ INSERT INTO Prodotto (Id_Prod, Id_Fornitore, Giacenza, Nome, Prezzo) VALUES
 (4, '12345678901', 5, 'Borraccia Termica', 15.50),
 (5, '11223344556', 30, 'Spray Igienizzante', 5.00);
 
--- 3.8 Popolamento MOVIMENTO_MAGAZZINO
-INSERT INTO Movimento_Magazzino (Id_Movimento, Matricola_Dipendente, Data, Tipo, Quantita) VALUES
-(1, 'DIP003', '2024-01-10', 'entrata', 50), -- La receptionist carica le barrette
-(2, 'DIP003', '2024-01-12', 'uscita', 5),   -- Vendute 5 barrette
-(3, 'DIP001', '2024-02-01', 'uscita', 2),   -- Il manutentore usa 2 spray
-(4, 'DIP002', '2024-02-15', 'entrata', 20), -- Il direttore ordina nuove borracce
-(5, 'DIP004', '2024-03-01', 'entrata', 100); -- Il PT porta nuovi integratori
+-- 3.8 Popolamento MOVIMENTO_MAGAZZINO (Aggiornato con Id_Prod)
+INSERT INTO Movimento_Magazzino (Id_Movimento, Matricola_Dipendente, Id_Prod, Data, Tipo, Quantita) VALUES
+(1, 'DIP003', 1, '2024-01-10', 'entrata', 50), -- ID 1 = Barretta (La receptionist carica le barrette)
+(2, 'DIP003', 1, '2024-01-12', 'uscita', 5),   -- ID 1 = Barretta (Vendute 5 barrette)
+(3, 'DIP001', 5, '2024-02-01', 'uscita', 2),   -- ID 5 = Spray (Il manutentore usa 2 spray)
+(4, 'DIP002', 4, '2024-02-15', 'entrata', 20), -- ID 4 = Borraccia (Il direttore ordina nuove borracce)
+(5, 'DIP004', 2, '2024-03-01', 'entrata', 100);-- ID 2 = Gatorade (Il PT porta nuovi integratori/bevande)
 
 -- 3.9 Popolamento EVENTO
 INSERT INTO Evento (Id_Evento, Nome, Luogo, Data, Descrizione) VALUES
