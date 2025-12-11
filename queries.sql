@@ -58,3 +58,19 @@ JOIN Abbonamento A ON S.Id_Abbonamento = A.Id_Abbonamento;
 
 
 --Valore Economico della merca uscita divisa per nome
+SELECT P.Nome,
+SUM(M.QUANTITA) as Quantita_Uscita,
+SUM(M.Quantita* P.Prezzo) as Totale_Uscita
+FROM Movimento_Magazzino M
+JOIN Prodotto P ON M.Id_Prod = P.Id_Prod
+WHERE M.Tipo = 'uscita'
+GROUP BY P.Nome;
+
+
+SELECT U.Nome, U.Cognome, SUM(Quantita) as Quantita_spostata
+FROM User U
+JOIN Dipendente D ON U.Id = D.Id
+JOIN Movimento_Magazzino M ON D.Matricola = M.Matricola_Dipendente
+WHERE Data BETWEEN '2024-01-01' AND '2024-01-31'
+GROUP BY U.Nome, U.Cognome;
+
